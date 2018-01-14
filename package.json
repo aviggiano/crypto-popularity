@@ -1,14 +1,20 @@
 {
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "helmet": "^3.9.0",
     "underscore": "^1.8.3"
   },
   "name": "crypto-popularity",
   "description": "A cryptocurrency popularity classifier",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "src/app.js",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/app.js",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
