@@ -11,7 +11,7 @@ module.exports = (subreddit, callback) => {
       const child = children.find(e => e.data.title.match(/Daily.*Discussion|Weekly.*Skepticism/i))
       const url = `${child.data.url}.json?limit=1000`
       getAllChildren(url, (err, children) => {
-        const posts = children.map(e => ({body: e.data.body, score: e.data.score}))
+        const posts = getAllPosts(children)
         const match = shills(posts)
         const text = u
           .chain({'Symbol': {mentions: 'Mention', score: 'Score'}})
@@ -38,16 +38,31 @@ const getAllChildren = (url, callback) => {
   })
 }
 
+const getAllPosts = (children) => {
+  const toPost = e => ({body: e.data.body, score: e.data.score})
+  const parents = children.map(toPost)
+  const replies = u.chain(children)
+    .map(e => e.data.replies)
+    .filter(e => e)
+    .map(e => e.data.children)
+    .flatten()
+    .map(toPost)
+    .value()
+  return parents.concat(replies)
+}
+
+let i = 0
 const shills = (posts) => {
   const definitions = require('../assets/definitions.json')
   const ans = {}
   u.each(definitions, (val, key) => {
-    // const reVal = new RegExp(`\\b${val}\\b`, 'ig')
-    const reKey = new RegExp(`\\b${key}\\b`, 'g')
+    const reKey = new RegExp(`\\b${key}\\b`)
     posts.forEach((post) => {
       if (post.body) {
-        if (/*post.body.match(reVal) || */ post.body.match(reKey)) {
-          ans[key] = ans[key] || {mentions: 0, score: 0}
+        if (post.body.match(reKey)) {
+          if (!ans[key]) {
+            ans[key] = {mentions: 0, score: 0}
+          }
           ans[key].mentions += 1
           ans[key].score += post.score
         }
