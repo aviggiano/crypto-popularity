@@ -9,7 +9,7 @@ module.exports = (callback) => {
     else {
       const data = JSON.parse(body)
       const definitions = data
-        .filter(e => e.market_cap_usd > 10E6)
+        .filter(e => e.market_cap_usd > 50E6)
         .map(e => ({symbol: e.symbol, name: e.name}))
         .reduce((a, b) => {
           a[b.symbol] = b.name
