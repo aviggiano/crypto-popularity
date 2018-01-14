@@ -1,4 +1,4 @@
-const debug = require('debug')('agro-index:app')
+const debug = require('debug')('crypto-popularity:app')
 const bodyParser = require('body-parser')
 const express = require('express')
 const helmet = require('helmet')
