@@ -17,7 +17,7 @@ module.exports = (req, res) => {
           a[b.symbol] = b.name
           return a
         }, {})
-      fs.writeFile(__dirname + '/../../assets/definitions.json', JSON.stringify(definitions), (err) => {
+      fs.writeFile(`${__dirname}/../../assets/definitions.json`, JSON.stringify(definitions), (err) => {
         if (err) res.status(HTTP.INTERNAL_SERVER_ERROR).send(err)
         else res.json(definitions)
       })

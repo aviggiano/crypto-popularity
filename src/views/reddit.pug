@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        link(rel='stylesheet', href='/styles.css')
+div
+    table
+        thead
+            tr
+                th #{title.symbol}
+                th #{title.score}
+                th #{title.mentions}
+        tbody
+            each post in body
+                tr
+                    td #{post.symbol}
+                    td #{post.score}
+                    td #{post.mentions}

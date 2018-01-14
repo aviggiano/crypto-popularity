@@ -1,0 +1,15 @@
+td, th {
+    border: 1px solid #DDDDDD;
+    padding: 2px;
+}
+
+tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+th {
+    padding: 2px;
+    text-align: left;
+    background-color: #AAAAAA;
+    color: white
+}

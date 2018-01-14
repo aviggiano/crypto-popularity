@@ -1,6 +1,7 @@
-const {HTTP} = require('../codes/index')
 const request = require('request')
 const u = require('underscore')
+
+const {HTTP} = require('../codes/index')
 
 module.exports = (req, res) => {
   const url = `https://www.reddit.com/r/CryptoCurrency/.json`
@@ -15,16 +16,14 @@ module.exports = (req, res) => {
         if (err) res.status(HTTP.INTERNAL_SERVER_ERROR).send(err)
         else {
           const posts = getAllPosts(children)
-          const match = shills(posts)
-          const text = u
-            .chain({'Symbol': {mentions: 'Mention', score: 'Score'}})
-            .extend(match)
-            .map((val, key) => [key, val.mentions, val.score])
-            .sortBy(e => -e[2])
-            .map(e => e.join('\t'))
+          const ans = shills(posts)
+          const body = u
+            .chain(ans)
+            .map((val, key) => ({symbol: key, mentions: val.mentions, score: val.score}))
+            .sortBy(e => -e.score)
             .value()
-            .join('\n')
-          res.send(text)
+          const title = {symbol: 'Symbol', mentions: 'Mentions', score: 'Score'}
+          res.render('reddit', {title, body})
         }
       })
     }
